@@ -21,13 +21,13 @@ from zope import interface, component
 from zope.event import notify
 from zope.size.interfaces import ISized
 from zope.proxy import removeAllProxies
-from zope.security import canWrite, checkPermission, canAccess
+from zope.security import canWrite, checkPermission, canAccess as canAccessBase
 from zope.exceptions import DuplicationError
 from zope.component import getMultiAdapter, queryMultiAdapter
 from zope.traversing.api import traverse, getPath, joinPath, getName
 from zope.traversing.browser import absoluteURL
 from zope.traversing.interfaces import TraversalError
-from zope.security.interfaces import Unauthorized
+from zope.security.interfaces import Unauthorized, ForbiddenAttribute
 from zope.security.proxy import removeSecurityProxy
 from zope.annotation.interfaces import IAnnotations
 from zope.dublincore.interfaces import ICMFDublinCore
@@ -58,6 +58,13 @@ from zojax.content.type.interfaces import IContainerContentsTable
 from interfaces import _
 from interfaces import IContainerListing, IContainerURL, IRenameContainerContents
 
+
+def canAccess(*kv, **kw):
+    try:
+        return canAccessBase(*kv, **kw)
+    except ForbiddenAttribute:
+        return False
+    
 
 class ContainerListing(Table):
     interface.implements(IContainerListing)
