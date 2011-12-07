@@ -1,14 +1,14 @@
 <tal:block i18n:domain="zojax.content.browser">
-  <h1>Are you sure you want remove this content item?</h1>
+  <h1 i18n:translate="">Are you sure you want remove this content item?</h1>
 
   <tal:block content="structure pagelet:content.type.preview" />
 
   <form action="delete.html" method="post">
     <div class="z-form-controls">
       <hr />
-      <input type="submit" class="z-form-cancelbutton"
+      <input type="submit" class="z-form-cancelbutton" i18n:attributes="value"
 	     name="form.delete.cancel" value="Cancel" />
-      <input type="submit" class="z-form-removebutton"
+      <input type="submit" class="z-form-removebutton" i18n:attributes="value"
 	     name="form.delete.content" value="Delete" />
     </div>
   </form>
