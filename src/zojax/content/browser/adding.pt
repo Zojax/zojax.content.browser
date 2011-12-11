@@ -15,11 +15,11 @@
 	</div>
 	<div>
 	  <a tal:attributes="href info/action"
-	     tal:content="info/title" i18n:translate="">
+	     tal:content="info/title">
 	    Folder
 	  </a>
 	  <div class="byline">
-	    <tal:block tal:content="info/description" i18n:translate="">
+	    <tal:block tal:content="info/description">
 	      Folders are generic containers for content, including other folders.
 	    </tal:block> &nbsp;
 	  </div>
