@@ -91,6 +91,6 @@
      file="parentArrowUp.gif" />
 
   <!-- translations -->
-  <i18n:registerTranslations directory="locales"/>
+  <i18n:registerTranslations directory="locales" />
 
 </configure>

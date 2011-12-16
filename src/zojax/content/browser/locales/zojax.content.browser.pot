@@ -1,0 +1,235 @@
+##############################################################################
+#
+# Copyright (c) 2003-2004 Zope Corporation and Contributors.
+# All Rights Reserved.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
+msgid ""
+msgstr ""
+"Project-Id-Version: Development/Unknown\n"
+"POT-Creation-Date: Sun Dec 11 10:44:13 2011\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: zope/app/locales/extract.py\n"
+
+#: src/zojax/content/browser/adding.pt:3
+msgid "Add new content"
+msgstr ""
+
+#: src/zojax/content/browser/adding.pt:4
+msgid "Select the type of item you want to add to your container."
+msgstr ""
+
+#: src/zojax/content/browser/adding.pt:8
+msgid "Available items"
+msgstr ""
+
+#: src/zojax/content/browser/adding.py:37
+msgid "Add content"
+msgstr ""
+
+#: src/zojax/content/browser/bylinemodified.pt:1
+msgid "Last modified at ${modified}"
+msgstr ""
+
+#: src/zojax/content/browser/bylineowner.pt:2
+msgid "Created by ${owner}"
+msgstr ""
+
+#: src/zojax/content/browser/configure.zcml:74
+msgid "Context"
+msgstr ""
+
+#: src/zojax/content/browser/content.zcml:71
+msgid "Content title"
+msgstr ""
+
+#: src/zojax/content/browser/content.zcml:86
+msgid "Content description"
+msgstr ""
+
+#: src/zojax/content/browser/contentitem.py:32
+#: src/zojax/content/browser/table.py:685
+msgid "[No title]"
+msgstr ""
+
+#: src/zojax/content/browser/contents.pt:2
+msgid "Contents"
+msgstr ""
+
+#: src/zojax/content/browser/contents.pt:3
+msgid "Up one level"
+msgstr ""
+
+#: src/zojax/content/browser/delete.pt:11
+#: src/zojax/content/browser/table.pt:54
+msgid "Delete"
+msgstr ""
+
+#: src/zojax/content/browser/delete.pt:2
+msgid "Are you sure you want remove this content item?"
+msgstr ""
+
+#: src/zojax/content/browser/delete.pt:9
+#: src/zojax/content/browser/table.pt:62
+msgid "Cancel"
+msgstr ""
+
+#: src/zojax/content/browser/delete.py:35
+msgid "Content has been deleted."
+msgstr ""
+
+#: src/zojax/content/browser/delete.py:49
+msgid "Content cannot be deleted."
+msgstr ""
+
+#: src/zojax/content/browser/table.pt:39
+msgid "Rename"
+msgstr ""
+
+#: src/zojax/content/browser/table.pt:42
+msgid "Cut"
+msgstr ""
+
+#: src/zojax/content/browser/table.pt:45
+msgid "Copy"
+msgstr ""
+
+#: src/zojax/content/browser/table.pt:48
+msgid "Paste"
+msgstr ""
+
+#: src/zojax/content/browser/table.pt:51
+msgid "Paste Link"
+msgstr ""
+
+#: src/zojax/content/browser/table.pt:60
+msgid "Apply"
+msgstr ""
+
+#: src/zojax/content/browser/table.pt:67
+msgid "Move Up"
+msgstr ""
+
+#: src/zojax/content/browser/table.pt:70
+msgid "Move Top"
+msgstr ""
+
+#: src/zojax/content/browser/table.pt:73
+msgid "Move Down"
+msgstr ""
+
+#: src/zojax/content/browser/table.pt:76
+msgid "Move Bottom"
+msgstr ""
+
+#: src/zojax/content/browser/table.py:178
+msgid "You didn't specify any ids to rename."
+msgstr ""
+
+#: src/zojax/content/browser/table.py:219
+msgid "Items order have been changed."
+msgstr ""
+
+#: src/zojax/content/browser/table.py:248
+msgid "You didn't specify any ids to remove."
+msgstr ""
+
+#: src/zojax/content/browser/table.py:259
+msgid "Selected items has been removed."
+msgstr ""
+
+#: src/zojax/content/browser/table.py:262
+msgid "No items can be removed."
+msgstr ""
+
+#: src/zojax/content/browser/table.py:271
+msgid "You didn't specify any ids to copy."
+msgstr ""
+
+#: src/zojax/content/browser/table.py:283
+#. Default: "name"
+msgid "Object '${name}' cannot be copied"
+msgstr ""
+
+#: src/zojax/content/browser/table.py:292
+msgid "Selected items has been copied."
+msgstr ""
+
+#: src/zojax/content/browser/table.py:300
+msgid "You didn't specify any ids to cut."
+msgstr ""
+
+#: src/zojax/content/browser/table.py:312
+#. Default: "name"
+msgid "Object '${name}' cannot be moved"
+msgstr ""
+
+#: src/zojax/content/browser/table.py:321
+msgid "Selected items has been cut."
+msgstr ""
+
+#: src/zojax/content/browser/table.py:388
+#: src/zojax/content/browser/table.py:443
+msgid "The given name(s) %s is / are already being used"
+msgstr ""
+
+#: src/zojax/content/browser/table.py:585
+msgid "Name"
+msgstr ""
+
+#: src/zojax/content/browser/table.py:618
+msgid "Item with this name already exists."
+msgstr ""
+
+#: src/zojax/content/browser/table.py:625
+msgid "Items have been renamed."
+msgstr ""
+
+#: src/zojax/content/browser/table.py:668
+msgid "Title"
+msgstr ""
+
+#: src/zojax/content/browser/table.py:705
+msgid "Items have been retitled."
+msgstr ""
+
+#: src/zojax/content/browser/table.py:72
+msgid "Content listing"
+msgstr ""
+
+#: src/zojax/content/browser/table.py:736
+msgid "Type"
+msgstr ""
+
+#: src/zojax/content/browser/table.py:74
+msgid "There are no items in this container."
+msgstr ""
+
+#: src/zojax/content/browser/table.py:753
+msgid "Size"
+msgstr ""
+
+#: src/zojax/content/browser/table.py:773
+msgid "Created"
+msgstr ""
+
+#: src/zojax/content/browser/table.py:796
+msgid "Modified"
+msgstr ""
+
+#: src/zojax/content/browser/tests/content.pt:1
+msgid "URL: ${url}"
+msgstr ""
+
