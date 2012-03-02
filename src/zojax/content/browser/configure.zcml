@@ -90,6 +90,10 @@
      name="zojax-content-parentArrowUp.gif"
      file="parentArrowUp.gif" />
 
+  <zojax:resource
+     name="zojax-content-icon-shortcut.gif"
+     file="icon-shortcut-16x16.gif" />
+
   <!-- translations -->
   <i18n:registerTranslations directory="locales" />
 

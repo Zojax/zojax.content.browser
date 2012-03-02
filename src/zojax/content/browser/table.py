@@ -39,7 +39,7 @@ from zope.app.container.contained import notifyContainerModified
 from zope.i18n import translate
 from zope.lifecycleevent import ObjectModifiedEvent, Attributes
 
-from zc.shortcut.interfaces import IObjectLinker
+from zc.shortcut.interfaces import IObjectLinker, IShortcut
 
 from zojax.table.table import Table
 from zojax.table.column import Column, AttributeColumn
@@ -64,7 +64,7 @@ def canAccess(*kv, **kw):
         return canAccessBase(*kv, **kw)
     except ForbiddenAttribute:
         return False
-    
+
 
 class ContainerListing(Table):
     interface.implements(IContainerListing)
@@ -190,7 +190,7 @@ class ContainerContents(ContainerListing):
 
         elif "form.buttons.paste" in request:
             self.pasteObjects()
-        
+
         elif "form.buttons.pasteLink" in request:
             self.pasteObjectLinks()
 
@@ -283,7 +283,7 @@ class ContainerContents(ContainerListing):
                     _("Object '${name}' cannot be copied",{"name": id}),'error')
                 return
             items.append(joinPath(container_path, id))
-        
+
         # store the requested operation in the principal annotations:
         clipboard = getPrincipalClipboard(request)
         clipboard.clearContents()
@@ -387,7 +387,7 @@ class ContainerContents(ContainerListing):
             IStatusMessage(request).add(
                 _("The given name(s) %s is / are already being used" %(
                 str(not_pasteable_ids))), 'error')
-            
+
     def linkable(self):
         """Decide if there is anything to paste """
         target = self.context
@@ -575,7 +575,14 @@ class IconColumn(Column):
         if zmi_icon is None:
             return ''
         else:
+            if self.isIShortcut():
+                self.cssClass = '%s shortcut' % self.cssClass
+                return '<div class="shortcut-icon"></div> %s' % zmi_icon()
+
             return zmi_icon()
+
+    def isIShortcut(self):
+        return IShortcut.providedBy(self.content)
 
 
 class NameColumn(AttributeColumn):
