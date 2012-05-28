@@ -325,6 +325,7 @@ class ContainerContents(ContainerListing):
         target = self.context
         clipboard = getPrincipalClipboard(self.request)
         items = clipboard.getContents()
+        pasteable = 0
         for item in items:
             try:
                 obj = traverse(target, item['target'])
@@ -335,16 +336,15 @@ class ContainerContents(ContainerListing):
                     mover = IObjectMover(obj)
                     moveableTo = self.safe_getattr(mover, 'moveableTo', None)
                     if moveableTo is None or not moveableTo(target) or not canAccess(obj.__parent__, '__delitem__'):
-                        return False
+                        continue
                 elif item['action'] == 'copy':
                     copier = IObjectCopier(obj)
                     copyableTo = self.safe_getattr(copier, 'copyableTo', None)
                     if copyableTo is None or not copyableTo(target) or not canAccess(target, '__setitem__'):
-                        return False
-                else:
-                    raise
+                        continue
+                    pasteable += 1
 
-        return True
+        return bool(pasteable)
 
     def pasteObjects(self):
         """Paste ojects in the user clipboard to the container """
@@ -393,6 +393,7 @@ class ContainerContents(ContainerListing):
         target = self.context
         clipboard = getPrincipalClipboard(self.request)
         items = clipboard.getContents()
+        linkable = 0
         for item in items:
             try:
                 obj = traverse(target, item['target'])
@@ -403,10 +404,9 @@ class ContainerContents(ContainerListing):
                     linker = IObjectLinker(obj)
                     linkableTo = self.safe_getattr(linker, 'linkableTo', None)
                     if linkableTo is None or not linkableTo(target) or not canAccess(target, '__setitem__'):
-                        return False
-                else:
-                    return False
-        return True
+                        continue
+                    linkable += 1
+        return bool(linkable)
 
     def pasteObjectLinks(self):
         """Paste oject links in the user clipboard to the container """
