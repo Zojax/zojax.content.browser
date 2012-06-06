@@ -34,7 +34,8 @@ from zope.dublincore.interfaces import ICMFDublinCore
 from zope.copypastemove.interfaces import IPrincipalClipboard
 from zope.copypastemove.interfaces import IContainerItemRenamer
 from zope.copypastemove.interfaces import IObjectCopier, IObjectMover
-from zope.app.container.interfaces import DuplicateIDError, IContainerNamesContainer
+from zope.app.container.interfaces import DuplicateIDError, IContainerNamesContainer, \
+                                          InvalidItemType
 from zope.app.container.contained import notifyContainerModified
 from zope.i18n import translate
 from zope.lifecycleevent import ObjectModifiedEvent, Attributes
@@ -373,6 +374,8 @@ class ContainerContents(ContainerListing):
                         copier.copyTo(target)
                     except DuplicateIDError:
                         duplicated_id = True
+                    except InvalidItemType:
+                        pass
                 else:
                     raise
 
