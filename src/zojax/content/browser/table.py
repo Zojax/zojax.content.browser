@@ -50,10 +50,10 @@ from zojax.formatter.utils import getFormatter
 from zojax.layoutform.interfaces import IFormWrapper
 from zojax.statusmessage.interfaces import IStatusMessage
 
-from zojax.content.type.interfaces import IItem, IOrder
+from zojax.content.type.interfaces import IItem, IOrder, IUncopyableContent
 from zojax.content.type.interfaces import IReordable, IContentType
 from zojax.content.type.interfaces import IContentViewView, IRenameNotAllowed
-from zojax.content.type.interfaces import IContentContainer, IUnremoveableContent
+from zojax.content.type.interfaces import IContentContainer, IUnremoveableContent, IUnpastableContent
 from zojax.content.type.interfaces import IContainerContentsTable
 
 from interfaces import _
@@ -508,7 +508,8 @@ class IdColumn(AttributeColumn):
         table = self.table
 
         copier = IObjectCopier(content, None)
-        if copier is not None and copier.copyable() and canAccess(table.context, '__setitem__'):
+        if copier is not None and copier.copyable() and canAccess(table.context, '__setitem__') \
+        and not IUncopyableContent.providedBy(content):
             copyable = True
             table.supportsCopy = True
         else:
@@ -521,9 +522,9 @@ class IdColumn(AttributeColumn):
         if not IUnremoveableContent.providedBy(content):
             mover = IObjectMover(content, None)
             if mover is not None and mover.moveable():
-                moveable = True
-                table.supportsCut = True
-
+                if not IUnpastableContent.providedBy(content):
+                    moveable = True
+                    table.supportsCut = True
                 if not IRenameNotAllowed.providedBy(content):
                     renameable = \
                         not IContainerNamesContainer.providedBy(self.context)
