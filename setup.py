@@ -71,6 +71,8 @@ setup(name = 'zojax.content.browser',
                           'zojax.resource',
                           'zojax.resourcepackage',
                           'zojax.table',
+                          'zojax.contenttype.document',
+                          'zojax.isodocument'
                           ],
       extras_require = dict(test=['zope.app.testing',
                                   'zope.app.zcmlfiles',

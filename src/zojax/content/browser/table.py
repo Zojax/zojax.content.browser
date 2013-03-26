@@ -15,7 +15,7 @@
 
 $Id$
 """
-import cgi
+import cgi, string
 from transaction import abort
 from zope import interface, component
 from zope.event import notify
@@ -46,7 +46,9 @@ from zojax.table.table import Table
 from zojax.table.column import Column, AttributeColumn
 from zojax.table.interfaces import IColumn, IDataset, ITableConfiguration
 
+from zojax.contenttype.document.interfaces import IDocument
 from zojax.formatter.utils import getFormatter
+from zojax.isodocument.interfaces import IISODocument
 from zojax.layoutform.interfaces import IFormWrapper
 from zojax.statusmessage.interfaces import IStatusMessage
 
@@ -623,7 +625,10 @@ class ContentsNameColumn(NameColumn):
             for oldid, newid in zip(ids, newids):
                 if newid != oldid:
                     try:
-                        renamer.renameItem(oldid, newid)
+                        # Exclude incorrect characters from new id
+                        validchars = "-%s%s" % (string.lowercase, string.digits)
+                        renamer.renameItem(oldid,
+                            ''.join(c for c in newid.lower() if c in validchars))
                     except DuplicationError:
                         IStatusMessage(self.request).add(
                             _('Item with this name already exists.'), 'error')
@@ -713,7 +718,9 @@ class ContentsTitleColumn(TitleColumn):
                 item = IItem(item)
                 item.title = title
                 notify(ObjectModifiedEvent(item, Attributes(IItem, 'title')))
-            IStatusMessage(self.request).add(_('Items have been retitled.'))
+
+            if newtitles:
+                IStatusMessage(self.request).add(_('Items have been retitled.'))
 
 
 class RenameTitleColumn(TitleColumn):
@@ -735,8 +742,11 @@ class RenameTitleColumn(TitleColumn):
                 if not canWrite(dc, 'title'):
                     return super(RenameTitleColumn, self).render()
 
+        if IDocument.providedBy(content) or IISODocument.providedBy(content):
+            return super(RenameTitleColumn, self).render()
+
         return u'<input type="text" name="newTitles:list" '\
-               'size="14" value="%s" />'%cgi.escape(self.query())
+                'size="14" value="%s" />'%cgi.escape(self.query())
 
 
 class TypeColumn(Column):
