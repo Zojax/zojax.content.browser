@@ -340,6 +340,7 @@ class ContainerContents(ContainerListing):
                     moveableTo = self.safe_getattr(mover, 'moveableTo', None)
                     if moveableTo is None or not moveableTo(target) or not canAccess(obj.__parent__, '__delitem__'):
                         continue
+                    pasteable += 1
                 elif item['action'] == 'copy':
                     copier = IObjectCopier(obj)
                     copyableTo = self.safe_getattr(copier, 'copyableTo', None)
