@@ -627,9 +627,9 @@ class ContentsNameColumn(NameColumn):
                 if newid != oldid:
                     try:
                         # Exclude incorrect characters from new id
-                        validchars = "-%s%s" % (string.lowercase, string.digits)
-                        renamer.renameItem(oldid,
-                            ''.join(c for c in newid.lower() if c in validchars))
+                        validchars = "-.%s%s" % (string.lowercase, string.digits)
+                        newid = ''.join(c for c in newid.lower() if c in validchars)
+                        renamer.renameItem(oldid, newid)
                     except DuplicationError:
                         IStatusMessage(self.request).add(
                             _('Item with this name already exists.'), 'error')
