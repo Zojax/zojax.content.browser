@@ -104,10 +104,16 @@ class ContainerListing(Table):
     def records(self):
         if self.batch is not None:
             for content in self.batch:
-                yield self.RecordClass(self, self.container[content])
+                try:
+                    yield self.RecordClass(self, self.container[content])
+                except Unauthorized:
+                    continue
         else:
             for content in self.dataset:
-                yield self.RecordClass(self, self.container[content])
+                try:
+                    yield self.RecordClass(self, self.container[content])
+                except Unauthorized:
+                    continue
 
     def updateContent(self, content, environ):
         url = self.environ['url']
