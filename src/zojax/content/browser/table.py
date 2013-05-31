@@ -15,7 +15,8 @@
 
 $Id$
 """
-import cgi, string
+import cgi
+import string
 from transaction import abort
 from zope import interface, component
 from zope.event import notify
@@ -34,8 +35,8 @@ from zope.dublincore.interfaces import ICMFDublinCore
 from zope.copypastemove.interfaces import IPrincipalClipboard
 from zope.copypastemove.interfaces import IContainerItemRenamer
 from zope.copypastemove.interfaces import IObjectCopier, IObjectMover
-from zope.app.container.interfaces import DuplicateIDError, IContainerNamesContainer, \
-                                          InvalidItemType
+from zope.app.container.interfaces import DuplicateIDError, \
+    IContainerNamesContainer, InvalidItemType
 from zope.app.container.contained import notifyContainerModified
 from zope.i18n import translate
 from zope.lifecycleevent import ObjectModifiedEvent, Attributes
@@ -44,7 +45,7 @@ from zc.shortcut.interfaces import IObjectLinker, IShortcut
 
 from zojax.table.table import Table
 from zojax.table.column import Column, AttributeColumn
-from zojax.table.interfaces import IColumn, IDataset, ITableConfiguration
+from zojax.table.interfaces import IColumn
 
 from zojax.contenttype.document.interfaces import IDocument
 from zojax.formatter.utils import getFormatter
@@ -55,11 +56,13 @@ from zojax.statusmessage.interfaces import IStatusMessage
 from zojax.content.type.interfaces import IItem, IOrder, IUncopyableContent
 from zojax.content.type.interfaces import IReordable, IContentType
 from zojax.content.type.interfaces import IContentViewView, IRenameNotAllowed
-from zojax.content.type.interfaces import IContentContainer, IUnremoveableContent, IUnpastableContent
+from zojax.content.type.interfaces import IContentContainer, \
+    IUnremoveableContent, IUnpastableContent
 from zojax.content.type.interfaces import IContainerContentsTable
 
 from interfaces import _
-from interfaces import IContainerListing, IContainerURL, IRenameContainerContents
+from interfaces import IContainerListing, IContainerURL, \
+    IRenameContainerContents
 
 
 def canAccess(*kv, **kw):
@@ -122,14 +125,14 @@ class ContainerListing(Table):
         environ['viewUrl'] = None
 
         if url:
-            environ['url'] = '%s/%s'%(self.environ['url'], content.__name__)
+            environ['url'] = '%s/%s' % (self.environ['url'], content.__name__)
 
             viewName = component.queryMultiAdapter(
                 (content, self.request), IContentViewView)
             if viewName:
-                environ['viewUrl'] = '%s/%s'%(environ['url'], viewName.name)
+                environ['viewUrl'] = '%s/%s' % (environ['url'], viewName.name)
             else:
-                environ['viewUrl'] = '%s/'%environ['url']
+                environ['viewUrl'] = '%s/' % environ['url']
 
 
 class ContainerContents(ContainerListing):
@@ -203,7 +206,7 @@ class ContainerContents(ContainerListing):
         elif "form.buttons.pasteLink" in request:
             self.pasteObjectLinks()
 
-        order = IOrder(self.context, None)
+        order = IOrder(context, None)
         if order is not None and IReordable.providedBy(order):
             self.orderButtons = len(order) > 1
 
@@ -223,7 +226,7 @@ class ContainerContents(ContainerListing):
                 changed = order.moveBottom(selected)
 
             if changed:
-                notifyContainerModified(self.context)
+                notifyContainerModified(context)
                 IStatusMessage(request).add(
                     _(u'Items order have been changed.'))
         else:
@@ -289,7 +292,9 @@ class ContainerContents(ContainerListing):
             copier = IObjectCopier(ob)
             if not copier.copyable():
                 IStatusMessage(request).add(
-                    _("Object '${name}' cannot be copied",{"name": id}),'error')
+                    _("Object '${name}' cannot be copied", {"name": id}),
+                    'error'
+                )
                 return
             items.append(joinPath(container_path, id))
 
@@ -318,7 +323,9 @@ class ContainerContents(ContainerListing):
             mover = IObjectMover(ob)
             if not mover.moveable():
                 IStatusMessage(request).add(
-                    _("Object '${name}' cannot be moved",{"name": id}),'error')
+                    _("Object '${name}' cannot be moved", {"name": id}),
+                    'error'
+                )
                 return
             items.append(joinPath(container_path, id))
 
@@ -344,13 +351,15 @@ class ContainerContents(ContainerListing):
                 if item['action'] == 'cut':
                     mover = IObjectMover(obj)
                     moveableTo = self.safe_getattr(mover, 'moveableTo', None)
-                    if moveableTo is None or not moveableTo(target) or not canAccess(obj.__parent__, '__delitem__'):
+                    if moveableTo is None or not moveableTo(target) or \
+                        not canAccess(obj.__parent__, '__delitem__'):
                         continue
                     pasteable += 1
                 elif item['action'] == 'copy':
                     copier = IObjectCopier(obj)
                     copyableTo = self.safe_getattr(copier, 'copyableTo', None)
-                    if copyableTo is None or not copyableTo(target) or not canAccess(target, '__setitem__'):
+                    if copyableTo is None or not copyableTo(target) or \
+                        not canAccess(target, '__setitem__'):
                         continue
                     pasteable += 1
 
@@ -396,9 +405,9 @@ class ContainerContents(ContainerListing):
 
         if not_pasteable_ids:
             abort()
-            IStatusMessage(request).add(
-                _("The given name(s) %s is / are already being used" %(
-                str(not_pasteable_ids))), 'error')
+            IStatusMessage(self.request).add(
+                _("The given name(s) %s is / are already being used" % (
+                    str(not_pasteable_ids))), 'error')
 
     def linkable(self):
         """Decide if there is anything to paste """
@@ -415,7 +424,8 @@ class ContainerContents(ContainerListing):
                 if item['action'] == 'copy':
                     linker = IObjectLinker(obj)
                     linkableTo = self.safe_getattr(linker, 'linkableTo', None)
-                    if linkableTo is None or not linkableTo(target) or not canAccess(target, '__setitem__'):
+                    if linkableTo is None or not linkableTo(target) or \
+                        not canAccess(target, '__setitem__'):
                         continue
                     linkable += 1
         return bool(linkable)
@@ -451,9 +461,9 @@ class ContainerContents(ContainerListing):
 
         if not_pasteable_ids:
             abort()
-            IStatusMessage(request).add(
-                _("The given name(s) %s is / are already being used" %(
-                str(not_pasteable_ids))), 'error')
+            IStatusMessage(self.request).add(
+                _("The given name(s) %s is / are already being used" % (
+                    str(not_pasteable_ids))), 'error')
 
     def hasClipboardContents(self):
         """Interogate the ``PrinicipalAnnotation`` to see if clipboard
@@ -517,8 +527,9 @@ class IdColumn(AttributeColumn):
         table = self.table
 
         copier = IObjectCopier(content, None)
-        if copier is not None and copier.copyable() and canAccess(table.context, '__setitem__') \
-        and not IUncopyableContent.providedBy(content):
+        if copier is not None and copier.copyable() and \
+            canAccess(table.context, '__setitem__') and \
+            not IUncopyableContent.providedBy(content):
             copyable = True
             table.supportsCopy = True
         else:
@@ -556,7 +567,7 @@ class IdColumn(AttributeColumn):
 
         value = self.query()
         ids = self.globalenviron['activeIds']
-        return u'<input type="checkbox" name="ids:list" value="%s" %s/>'%(
+        return u'<input type="checkbox" name="ids:list" value="%s" %s/>' % (
             cgi.escape(value), value in ids and u'checked="yes"' or u'')
 
 
@@ -567,8 +578,8 @@ class RenameIdColumn(IdColumn):
     def render(self):
         value = self.query()
         if value in self.globalenviron['activeIds']:
-            return u'<input type="hidden" name="ids:list" value="%s" />'%\
-                   cgi.escape(value)
+            return u'<input type="hidden" name="ids:list" value="%s" />' % \
+                cgi.escape(value)
         else:
             return ''
 
@@ -610,7 +621,7 @@ class NameColumn(AttributeColumn):
     def render(self):
         value = cgi.escape(self.query())
         if self.environ['viewUrl']:
-            return u'<a href="%s">%s</a>'%(self.environ['viewUrl'], value)
+            return u'<a href="%s">%s</a>' % (self.environ['viewUrl'], value)
         else:
             return value
 
@@ -628,13 +639,16 @@ class ContentsNameColumn(NameColumn):
             newids = self.request.get("newIds", ())
 
             renamed = False
-            renamer = IContainerItemRenamer(self.table.context)
+            renamer = IContainerItemRenamer(
+                removeAllProxies(self.table.context))
             for oldid, newid in zip(ids, newids):
                 if newid != oldid:
                     try:
                         # Exclude incorrect characters from new id
-                        validchars = "-.%s%s" % (string.lowercase, string.digits)
-                        newid = ''.join(c for c in newid.lower() if c in validchars)
+                        validchars = "-.%s%s" % (
+                            string.lowercase, string.digits)
+                        newid = ''.join(
+                            c for c in newid.lower() if c in validchars)
                         renamer.renameItem(oldid, newid)
                     except DuplicationError:
                         IStatusMessage(self.request).add(
@@ -654,16 +668,21 @@ class ContentsNameColumn(NameColumn):
 
         if self.environ['url']:
             if checkPermission('zojax.ModifyContent', content) \
-                and queryMultiAdapter((content, request), interface.Interface, name="context.html"):
-                return u'<a href="%s/context.html">%s</a>'%(
+                and queryMultiAdapter(
+                    (content, request),
+                    interface.Interface,
+                    name="context.html"):
+                return u'<a href="%s/context.html">%s</a>' % (
                     self.environ['url'], value)
             else:
-                viewName = queryMultiAdapter((content, request), IContentViewView)
+                viewName = queryMultiAdapter(
+                    (content, request), IContentViewView)
                 if viewName:
-                    return u'<a href="%s/%s">%s</a>'%(
+                    return u'<a href="%s/%s">%s</a>' % (
                         self.environ['url'], viewName.name, value)
                 else:
-                    return u'<a href="%s/">%s</a>'%(self.environ['url'], value)
+                    return u'<a href="%s/">%s</a>' % (
+                        self.environ['url'], value)
         else:
             return value
 
@@ -679,7 +698,7 @@ class RenameNameColumn(ContentsNameColumn):
         value = self.query()
         if value in self.globalenviron['activeIds']:
             return u'<input type="text" name="newIds:list" '\
-                   'size="10" value="%s" />'%cgi.escape(value)
+                   'size="10" value="%s" />' % cgi.escape(value)
         else:
             return super(RenameNameColumn, self).render()
 
@@ -727,7 +746,8 @@ class ContentsTitleColumn(TitleColumn):
                 notify(ObjectModifiedEvent(item, Attributes(IItem, 'title')))
 
             if newtitles:
-                IStatusMessage(self.request).add(_('Items have been retitled.'))
+                IStatusMessage(
+                    self.request).add(_('Items have been retitled.'))
 
 
 class RenameTitleColumn(TitleColumn):
@@ -744,7 +764,7 @@ class RenameTitleColumn(TitleColumn):
             if not canWrite(content, 'title'):
                 return super(RenameTitleColumn, self).render()
         else:
-            dc= ICMFDublinCore(content, None)
+            dc = ICMFDublinCore(content, None)
             if dc is not None:
                 if not canWrite(dc, 'title'):
                     return super(RenameTitleColumn, self).render()
@@ -753,7 +773,7 @@ class RenameTitleColumn(TitleColumn):
             return super(RenameTitleColumn, self).render()
 
         return u'<input type="text" name="newTitles:list" '\
-                'size="14" value="%s" />'%cgi.escape(self.query())
+            'size="14" value="%s" />' % cgi.escape(self.query())
 
 
 class TypeColumn(Column):
