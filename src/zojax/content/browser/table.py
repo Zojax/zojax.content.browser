@@ -49,7 +49,6 @@ from zojax.table.interfaces import IColumn
 
 from zojax.contenttype.document.interfaces import IDocument
 from zojax.formatter.utils import getFormatter
-from zojax.isodocument.interfaces import IISODocument
 from zojax.layoutform.interfaces import IFormWrapper
 from zojax.statusmessage.interfaces import IStatusMessage
 
@@ -769,7 +768,7 @@ class RenameTitleColumn(TitleColumn):
                 if not canWrite(dc, 'title'):
                     return super(RenameTitleColumn, self).render()
 
-        if IDocument.providedBy(content) or IISODocument.providedBy(content):
+        if IDocument.providedBy(content):
             return super(RenameTitleColumn, self).render()
 
         return u'<input type="text" name="newTitles:list" '\
