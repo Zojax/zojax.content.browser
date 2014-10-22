@@ -644,7 +644,7 @@ class ContentsNameColumn(NameColumn):
                 if newid != oldid:
                     try:
                         # Exclude incorrect characters from new id
-                        validchars = "-.%s%s" % (
+                        validchars = "-_.%s%s" % (
                             string.lowercase, string.digits)
                         newid = ''.join(
                             c for c in newid.lower() if c in validchars)
